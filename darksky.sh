@@ -68,7 +68,7 @@ CURRENTLY=$(echo $RSP | jq '.currently')
 TEMPERATURE=$(echo $CURRENTLY | jq '.temperature')
 HUMIDITY=$(echo $CURRENTLY | jq '.humidity')
 HUMIDITY=$(echo $HUMIDITY*100 | bc)
-#echo "Temperature: $TEMPERATURE"
-#echo "Humidity: $HUMIDITY"
+#echo "Temperature: $TEMPERATURE°C"
+#echo "Humidity: $HUMIDITY%RH"
 
-echo "$TEMPERATURE°C,$HUMIDITY%RH"
+echo "$TEMPERATURE,$HUMIDITY"
