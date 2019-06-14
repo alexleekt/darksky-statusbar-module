@@ -63,12 +63,57 @@ UNITS=$(strip_quotes $UNITS)
 #
 API_URI=https://api.darksky.net/forecast
 RSP=`curl -sS "${API_URI}/${API_KEY}/${LAT},${LONG}?lang=${LANG}&units=${UNITS}&exclude=minutely,hourly,daily,alerts"`
+#RSP=$(cat response.json)
 #echo "Response: $RSP"
+#echo $RSP > response.json
 CURRENTLY=$(echo $RSP | jq '.currently')
 TEMPERATURE=$(echo $CURRENTLY | jq '.temperature')
+APPARENTTEMPERATURE=$(echo $CURRENTLY | jq '.apparentTemperature' | awk '{print int($1+0.5)}')
 HUMIDITY=$(echo $CURRENTLY | jq '.humidity')
 HUMIDITY=$(echo $HUMIDITY*100 | bc)
 #echo "Temperature: $TEMPERATURE°C"
 #echo "Humidity: $HUMIDITY%RH"
+ICON=$(echo $CURRENTLY | jq '.icon') # uses nerd-fonts
+case $(strip_quotes $ICON) in
+"clear-day")
+    ICON=""
+    ;;
+"clear-night")
+    ICON=""
+    ;;
+"rain")
+    ICON=""
+    ;;
+"snow")q
+    ICON=""
+    ;;
+"sleet")
+    ICON=""
+    ;;
+"wind")
+    ICON=""
+    ;;
+"fog")
+    ICON=""
+    ;;
+"cloudy")
+    ICON=""
+    ;;
+"partly-cloudy-day")
+    ICON=""
+    ;;
+"partly-cloudy-night")
+    ICON=""
+    ;;
+"hail")
+    ICON=""
+    ;;
+"thunderstorm")
+    ICON=""
+    ;;
+"tornado")
+    ICON=""
+    ;;
+esac
 
-echo "$TEMPERATURE,$HUMIDITY"
+echo "$APPARENTTEMPERATURE°C $ICON"
